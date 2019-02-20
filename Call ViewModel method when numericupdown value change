@@ -1,0 +1,99 @@
+
+// This code was written by Srijon Chakraborty
+// Call ViewModel method when numericupdown value change Silverlight/WPF/Xamarin 
+// Note: This code works fine in Silverlight. But for WPF and Xamarin you might require little cutomization
+// All my other source codes are available on http://srijon.softallybd.com (Personal Blog)
+// NumericUpDown 
+------------------------------------------------------MyClassView.xaml Start-----------------------------------------
+
+<UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+xmlns:common="clr-namespace:Ease.PPIC.Common;assembly=Ease.PPIC.Common" 
+xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity" 
+xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+xmlns:sdk="http://schemas.microsoft.com/winfx/2006/xaml/presentation/sdk" 
+xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" 
+xmlns:toolkit="http://schemas.microsoft.com/winfx/2006/xaml/presentation/toolkit" 
+xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+x:Class="Srijon.MyClassView " 
+mc:Ignorable="d" DataContext="{Binding}">
+
+   <Grid x:Name="grdGeneral" Height="340" Width="785">
+      <toolkit:NumericUpDown Value="{Binding OrderedQty,Mode=TwoWay}" Margin="0,0,0,0" Minimum="0">
+         <i:Interaction.Triggers>
+            <i:EventTrigger EventName="LostFocus">
+               <i:InvokeCommandAction CommandParameter="{Binding}" 
+		                      Command="{Binding Path=DataContext.Calculate, Mode=TwoWay, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+            </i:EventTrigger>
+         </i:Interaction.Triggers>
+      </toolkit:NumericUpDown>
+   </Grid>
+</UserControl>
+
+------------------------------------------------------MyClassView.xaml Start-----------------------------------------
+
+-----------------------------------------MyClassView.cs CS File Start-----------------------------------------
+
+using System.Windows.Controls;
+using System.ComponentModel.Composition;
+using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Messaging;
+
+namespace Srijon
+{
+  
+    public partial class MyClassView : UserControl
+    {
+        public MyClassView ()
+        {
+            InitializeComponent();
+        }
+       
+        public MyClassViewModel ViewModel
+        {
+            get
+            {
+                return DataContext as MyClassViewModel;
+            }
+            set
+            {
+                DataContext = value;
+            }
+        }
+    }
+}
+-----------------------------------------MyClassView.cs CS File Start-----------------------------------------
+
+------------------------------MyClassViewModel.cs CS File START----------------------------------------------
+
+using GalaSoft.MvvmLight.Command;
+
+namespace Srijon
+{
+    public class MyClassViewModel
+    {
+        public RelayCommand<object> Calculate => new RelayCommand<object>(calculate);
+
+        #region OrderedQty: int
+
+        private decimal _OrderedQty;
+        public decimal OrderedQty
+        {
+            get { return _OrderedQty; }
+            set
+            {
+                _OrderedQty = value;
+            }
+        }
+
+        #endregion
+
+
+        void calculate(object parm)
+        {
+         //DO your Code
+        }
+
+	}
+}
+------------------------------MyClassViewModel.cs CS File END----------------------------------------------
