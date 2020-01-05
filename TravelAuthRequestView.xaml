@@ -1,0 +1,696 @@
+<UserControl x:Class="Ease.PPIC.Modules.TravelAuthRequestView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             xmlns:local="clr-namespace:Ease.PPIC.Modules"
+             xmlns:common="clr-namespace:Ease.PPIC.Common;assembly=Ease.PPIC.Common"
+             mc:Ignorable="d" DataContext="{Binding}"
+             xmlns:sdk="http://schemas.microsoft.com/winfx/2006/xaml/presentation/sdk" 
+             xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+             
+             Width="880" Height="535">
+    <Grid x:Name="LayoutRoot">
+        <Grid.Effect>
+            <DropShadowEffect Opacity="0.6" ShadowDepth="2" Direction="280"/>
+        </Grid.Effect>
+        <telerik:RadBusyIndicator x:Name="bsyMsg" IsBusy="{Binding IsBusy, Mode=OneWay}" DisplayAfter="0" BusyContent="{Binding BusyContent}"  ProgressBarStyle="{StaticResource CustomProgressBarStyle}"  Margin="0" Height="Auto">
+            <Grid x:Name="InnerContentRoot" >
+                <Grid.Effect>
+                    <DropShadowEffect Opacity="0.6" ShadowDepth="2" Direction="280"/>
+                </Grid.Effect>
+                <Border BorderBrush="SlateBlue" Background="White" CornerRadius="0,0,0,0">
+                    <Grid x:Name="MainLayout">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="5" />
+                            <RowDefinition Height="30" />
+                            <RowDefinition Height="94"/>
+                            <RowDefinition Height="365" />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <Border Grid.Row="1" Grid.RowSpan="2" Margin="6,0,6,0" BorderBrush="Black" BorderThickness="0.4">
+                            <Grid x:Name="Search" Grid.Row="1" common:DefaultButtonHelper.DefaultButton="{Binding ElementName=btnSearch}" Grid.RowSpan="2">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="0" />
+                                    <RowDefinition Height="Auto" MinHeight="31" />
+                                    <RowDefinition Height="34" />
+                                    <RowDefinition Height="6"/>
+                                </Grid.RowDefinitions>
+
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="97"/>
+                                    <ColumnDefinition Width="123*"/>
+                                    <ColumnDefinition Width="248"/>
+                                    <ColumnDefinition Width="80"/>
+                                    <ColumnDefinition Width="2*" />
+                                </Grid.ColumnDefinitions>
+
+                                <Grid.Resources>
+                                    <common:EnumValuesConverter x:Name="enumConverterFilter" />
+                                    <common:EnumValuesConverter x:Name="enumConvLoadFrom" />
+                                    <common:EnumDescriptionConverter x:Name="EnumDescriptionConverter"/>
+                                    <common:BooleanToVisibilityConverterReverse x:Name="BooleanToVisibilityConverterReverse"/>
+                                    <common:BooleanToVisibilityConverter x:Name="BooleanToVisibilityConverter"/>
+
+                                    <common:InverseBooleanConverter x:Name="InverseBooleanConverter"/>
+                                </Grid.Resources>
+                                <!--<TextBlock Text= "Code :" Height="14" HorizontalAlignment="Right" Margin="0,0,10,9" Name="tbkCode" VerticalAlignment="Bottom" Width="36" Grid.Row="1"/>
+                            <TextBox  HorizontalAlignment="Left" Height="22" Margin="2,4,0,0" Grid.Row="1" IsReadOnly="True" Name="txtCode" VerticalAlignment="Top" Width="273" Text="{Binding Code, Mode=TwoWay}" TabIndex="1" Grid.Column="1" />-->
+                                <TextBlock Text= "Name :" Height="14" HorizontalAlignment="Right" Margin="0,0,3,9" Name="tbkCe" VerticalAlignment="Bottom" Width="48" Grid.Row="1" RenderTransformOrigin="0.417,0.5"/>
+                                <TextBox  HorizontalAlignment="Left" Height="22" Margin="2,8,0,0" Grid.Row="1" Grid.Column="1" Name="txtName" VerticalAlignment="Top" Width="273" Text="{Binding Name, Mode=TwoWay}" TabIndex="2" />
+                                <TextBlock Text= "{Binding TravOrEvtTypeLabel}" Height="14" HorizontalAlignment="Right" Margin="0,0,247,9" Name="tbkffCe" VerticalAlignment="Bottom" Width="74" Grid.Row="1"  Grid.Column="1" RenderTransformOrigin="0.417,0.5" Grid.ColumnSpan="2"/>
+                                <!--<telerik:RadComboBox HorizontalAlignment="Left"  ItemsSource="{Binding TravelTypes, Mode=TwoWay,  Converter={StaticResource enumConvLoadFrom}}" Margin="7,5,0,0" Name="cboInvtTypes" SelectedItem="{Binding SelectedTravelTypes,Mode=TwoWay}" TabIndex="3" VerticalAlignment="Top" Width="172" Grid.Row="1" Grid.Column="2" Height="22" Visibility="{Binding IsEvent, Converter={StaticResource BooleanToVisibilityConverterReverse}}">
+                                <telerik:RadComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Mode=OneTime,Converter={StaticResource EnumDescriptionConverter}}" />
+                                    </DataTemplate>
+                                </telerik:RadComboBox.ItemTemplate>
+                            </telerik:RadComboBox>-->
+                                <!--<telerik:RadComboBox HorizontalAlignment="Left"  
+                                                 ItemsSource="{Binding TravelTypes, Mode=TwoWay}" 
+                                                 DisplayMemberPath="Value" 
+                                                 SelectedValue="{Binding SelectedTravelType, Mode=TwoWay}" 
+                                                 SelectedValuePath="Key" 
+                                                 Margin="7,5,0,0" Name="cboInvtTypes" 
+                                                 TabIndex="3" 
+                                                 VerticalAlignment="Top" 
+                                                 Width="321" Grid.Row="1" Grid.Column="2" Height="22" 
+                                                 Visibility="{Binding IsEvent, Converter={StaticResource BooleanToVisibilityConverterReverse}}" Grid.ColumnSpan="2">
+
+                                </telerik:RadComboBox>-->
+                                <!--<telerik:RadComboBox HorizontalAlignment="Left"  
+                                                 ItemsSource="{Binding TravelTypeItems, Mode=OneWay}" 
+                                                 DisplayMemberPath="Name" 
+                                                 SelectedItem="{Binding SelectedTravelTypeItem, Mode=TwoWay}"                                                                                                 
+                                                 SelectedValue="{Binding SelectedTravelTypeItemID, Mode=TwoWay}"
+                                                 SelectedValuePath="PKID"
+                                                 Margin="7,5,0,0" Name="cboInvtTypes" 
+                                                 TabIndex="3" 
+                                                 VerticalAlignment="Top" 
+                                                 Width="321" Grid.Row="1" Grid.Column="2" Height="22" 
+                                                 Grid.ColumnSpan="2">
+
+                                </telerik:RadComboBox>-->
+                                <telerik:RadComboBox Width="321" Grid.Row="1" Grid.Column="2" Height="22" Grid.ColumnSpan="2"
+	                                                 Margin="7,5,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" 
+	                                                 TabIndex="1" ItemsSource="{Binding TravelTypeItems, Mode=OneWay}" 
+	                                                 SelectedItem="{Binding SelectedTravelTypeItem, Mode=TwoWay}" 
+	                                                 SelectedValue="{Binding SelectedTravelTypeItemID, Mode=TwoWay}" DisplayMemberPath="Name" 
+	                                                 SelectedValuePath="PKID"/>
+                                <!--<telerik:RadComboBox HorizontalAlignment="Left"  
+                                                 ItemsSource="{Binding TravelTypeItems, Mode=TwoWay}" 
+                                                 DisplayMemberPath="Name" 
+                                                 SelectedItem="{Binding SelectedTravelTypeItem, Mode=TwoWay}"                                                                                                 
+                                                 Margin="7,5,0,0" Name="cboInvtTypes" 
+                                                 TabIndex="3" 
+                                                 VerticalAlignment="Top" 
+                                                 Width="321" Grid.Row="1" Grid.Column="2" Height="22" 
+                                                 Visibility="{Binding IsEvent, Converter={StaticResource BooleanToVisibilityConverterReverse}}" Grid.ColumnSpan="2">
+
+                                </telerik:RadComboBox>-->
+
+                                <TextBlock Text= "Purpose :" Height="14" HorizontalAlignment="Right" Margin="0,0,8,12" Name="tvkCe" VerticalAlignment="Bottom" Width="56" Grid.Row="2" RenderTransformOrigin="0.417,0.5"/>
+                                <TextBox AcceptsReturn="True" HorizontalAlignment="Left" VerticalScrollBarVisibility="Visible" Height="79" Margin="2,8,0,-47" Grid.Row="2" Grid.Column="1" Name="txcName" VerticalAlignment="Top" Width="273" Text="{Binding Purpose, Mode=TwoWay}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left" TabIndex="2" Grid.RowSpan="2" />
+
+                                <TextBlock Text= "No. Of Participant :" Height="14" HorizontalAlignment="Right" Margin="0,0,1,9" Name="tbkf" VerticalAlignment="Bottom" Width="109" Grid.Row="2"  Grid.Column="2" RenderTransformOrigin="0.417,0.5" Visibility="{Binding IsEvent, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                <telerik:RadNumericUpDown IsInteger="True" Value="{Binding NoOfParticipant,Mode=TwoWay}" Minimum="0"  Grid.Row="2"  Grid.Column="3" RenderTransformOrigin="0.417,0.5" Margin="2,8,0,4" Visibility="{Binding IsEvent, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+                                <TextBlock Text= "Date :" Height="14" HorizontalAlignment="Right" Margin="0,0,0,9" Name="tbdate" VerticalAlignment="Bottom" Width="36" Grid.Row="2"  Grid.Column="1" RenderTransformOrigin="0.417,0.5" Visibility="{Binding IsEvent, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                <telerik:RadDatePicker SelectedValue="{Binding DateOfEvent,Mode=TwoWay}" Height="22" Margin="7,0,115,4" Name="radate" VerticalAlignment="Bottom" Grid.Row="2"  Grid.Column="2" Culture="{Binding Path=DataContext.CultureWithFormattedPeriod, RelativeSource={RelativeSource AncestorType=UserControl}}" Visibility="{Binding IsEvent, Converter={StaticResource BooleanToVisibilityConverter}}" />
+
+                                <TextBlock Text= "Venue :" Height="14" HorizontalAlignment="Right" Margin="0,0,1,-14" Name="tvkCfe" Grid.Column="1" VerticalAlignment="Bottom" Width="43" Grid.Row="3" RenderTransformOrigin="0.417,0.5" Visibility="{Binding IsEvent, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                <TextBox AcceptsReturn="True" HorizontalAlignment="Left" VerticalScrollBarVisibility="Visible" Height="45" Margin="7,8,0,-47" Grid.Row="3" Grid.Column="2" Name="txcfName" VerticalAlignment="Top" Width="321" Text="{Binding Venue, Mode=TwoWay}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left" TabIndex="2" Visibility="{Binding IsEvent, Converter={StaticResource BooleanToVisibilityConverter}}" Grid.ColumnSpan="2"/>
+
+                            </Grid>
+                        </Border>
+                        <Grid x:Name="Body" Grid.Row="3" Background="White">
+
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="20" />
+                                <RowDefinition Height="2*" />
+                                <RowDefinition Height="20" />
+
+                                <RowDefinition Height="20" />
+                                <RowDefinition Height="3*" />
+                                <RowDefinition Height="{Binding AdvanceReqLabelVisibility}" />
+                                <RowDefinition Height="{Binding AdvanceReqItemVisibility}" />
+                                <RowDefinition Height="3" />
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Text= "Estimated Cost:" Height="14" FontWeight="Bold" HorizontalAlignment="Left" Margin="9,0,0,0" Name="tb3kggCe" VerticalAlignment="Bottom" Width="105" Grid.Row="0" RenderTransformOrigin="0.417,0.5"/>
+                            <telerik:RadGridView  telerik:StyleManager.Theme="Office Blue"  
+                                                  AutoGenerateColumns="False" ValidatesOnDataErrors="None" 
+                                                  ItemsSource="{Binding TravelOrEventEstimatedCostModelItems}" 
+                                                  Margin="7,7,6,2" Name="rgvInvtTypes3" 
+                                                  ShowGroupPanel="False" 
+                                                  Grid.Row="1" CanUserDeleteRows="False" 
+                                                  CanUserInsertRows="False" IsReadOnly="True" 
+                                                  DataLoadMode="Synchronous"
+                                                  IsSynchronizedWithCurrentItem="True" 
+                                                  SelectionMode="Single"
+                                                  SelectedItem="{Binding SelectedTravelOrEventEstimatedCostModelItem, Mode=TwoWay}" >
+
+                                <telerik:RadGridView.Columns>
+                                    <telerik:GridViewDataColumn IsReadOnly="True" IsResizable="False" >
+                                        <telerik:GridViewDataColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Button Name="btnadd"
+                                                            Width="20"
+                                                            Height="20"
+                                                            CommandParameter="{Binding}"
+                                                            IsTabStop="False"
+                                                            Visibility="{Binding IsAddVisible}"
+                                                            Content="..."
+                                                            ToolTipService.ToolTip="Click here to Add Cost Item...">
+
+                                                    <Button.Command>
+                                                        <Binding Path="DataContext.AddCostItem" RelativeSource="{RelativeSource AncestorType=UserControl}" />
+                                                    </Button.Command>
+                                                </Button>
+                                            </DataTemplate>
+                                        </telerik:GridViewDataColumn.CellTemplate>
+                                    </telerik:GridViewDataColumn>
+
+                                    <telerik:GridViewDataColumn IsReadOnly="True" IsResizable="False">
+                                        <telerik:GridViewDataColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Button Name="btndelete"
+                                                            Width="20"
+                                                            Height="20"
+                                                            Visibility="{Binding IsDeleteVisible}"
+                                                            CommandParameter="{Binding}"
+                                                            IsTabStop="False"
+                                                            ToolTipService.ToolTip="Click here to remove this row...">
+                                                    <Button.Content>
+                                                        <Image Name="imageTest"
+                                                                   Width="10"
+                                                                   Height="10"
+                                                                   HorizontalAlignment="Left"
+                                                                   VerticalAlignment="Top"
+                                                                   Source="/Ease.PPIC.Modules;component/Assets/Images/delete.PNG"
+                                                                   Stretch="Fill" />
+                                                    </Button.Content>
+                                                    <Button.Command>
+                                                        <Binding Path="DataContext.DeleteCostItem" RelativeSource="{RelativeSource AncestorType=UserControl}" />
+                                                    </Button.Command>
+                                                </Button>
+                                            </DataTemplate>
+                                        </telerik:GridViewDataColumn.CellTemplate>
+                                    </telerik:GridViewDataColumn>
+                                    <!--<telerik:GridViewDataColumn DataMemberBinding="{Binding ItemName}" Header="Particular Of Expense" Width="*" HeaderTextAlignment="Center" TextAlignment="Left"/>-->
+                                    <telerik:GridViewDataColumn DataMemberBinding="{Binding ItemName, Mode=TwoWay}" IsReadOnly="True" Header="Particular Of Expense"  Width="*" HeaderTextAlignment="Left"/>
+
+                                    <telerik:GridViewDataColumn Header="Amount" TextWrapping="Wrap" IsReadOnly="True" IsResizable="True" Width="160" HeaderTextAlignment="Center" >
+                                        <telerik:GridViewDataColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <telerik:RadNumericUpDown
+                                                    Value="{Binding Amount,Mode=TwoWay}" 
+                                                    Margin="0,0,0,0" 
+                                                    Minimum="0"
+                                                    >
+                                                    <i:Interaction.Triggers>
+                                                        <i:EventTrigger EventName="LostFocus">
+                                                            <i:InvokeCommandAction CommandParameter="{Binding}" Command="{Binding Path=DataContext.Calculate, Mode=TwoWay, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
+                                                        </i:EventTrigger>
+                                                    </i:Interaction.Triggers>
+                                                </telerik:RadNumericUpDown>
+                                            </DataTemplate>
+                                        </telerik:GridViewDataColumn.CellTemplate>
+                                    </telerik:GridViewDataColumn>
+                                    <telerik:GridViewDataColumn Header="Note" IsReadOnly="True" IsResizable="True" Width="370" HeaderTextAlignment="Center">
+                                        <telerik:GridViewDataColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBox  HorizontalAlignment="Center" 
+                                                          Height="22" Margin="0,0,0,0" 
+                                                          Grid.Row="2" Grid.Column="1" 
+                                                          Name="tt" VerticalAlignment="Center" 
+                                                          Width="360" Text="{Binding Note, Mode=TwoWay}" TabIndex="2" />
+                                            </DataTemplate>
+                                        </telerik:GridViewDataColumn.CellTemplate>
+                                    </telerik:GridViewDataColumn>
+                                </telerik:RadGridView.Columns>
+
+                                <!--<telerik:RadGridView.RowDetailsTemplate>
+                                    <DataTemplate>
+                                        <Grid Height="100" Width="Auto"  HorizontalAlignment="Stretch" Background="White">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="1*"/>
+                                                <RowDefinition Height="1*"/>                                               
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="100" />
+                                                <ColumnDefinition Width="600" />
+                                            </Grid.ColumnDefinitions>
+
+
+                                            <TextBlock Grid.Row="0" Grid.Column="0" Height="Auto"  Text="From Location:" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                            <TextBox Grid.Row="0" Grid.Column="1"
+                    	                            Margin="0,0,0,0"
+                    	                            HorizontalAlignment="Left"
+                    	                            VerticalAlignment="Stretch"
+                                                    HorizontalScrollBarVisibility="Disabled"
+                                                                     VerticalScrollBarVisibility="Visible"
+                                                                    TextWrapping="Wrap" AcceptsReturn="True" VerticalContentAlignment="Top"
+                                                         Height="45" Width="580"
+                    	                            Text="{Binding Specification, Mode=TwoWay}"
+                                                                     IsEnabled="True" 
+                    	                            IsReadOnly="False" />
+
+                                            <TextBlock Grid.Row="1" Grid.Column="0" Height="Auto"  HorizontalAlignment="Center" VerticalAlignment="Center" Text="To Location:"/>
+                                            <TextBox Grid.Row="1" 
+                                                     Grid.Column="1"
+                    	                            Margin="0,0,0,0"
+                    	                            HorizontalAlignment="Left"
+                    	                            VerticalAlignment="Stretch"
+                                                    HorizontalScrollBarVisibility="Disabled"
+                                                                     VerticalScrollBarVisibility="Visible"
+                                                                    TextWrapping="Wrap" AcceptsReturn="True" VerticalContentAlignment="Top"
+                                                         Height="45" Width="580"
+                    	                            Text="{Binding Specification, Mode=TwoWay}"
+                                                                     IsEnabled="True" 
+                    	                            IsReadOnly="False" />
+
+                                        </Grid>
+                                    </DataTemplate>
+                                </telerik:RadGridView.RowDetailsTemplate>-->
+                            </telerik:RadGridView>
+
+                            <TextBlock Text= "Total Amount:" Height="14" FontWeight="Bold" HorizontalAlignment="Left" Margin="232,0,0,3" Name="tb2gCe" VerticalAlignment="Bottom" Width="91" Grid.Row="2" RenderTransformOrigin="0.417,0.5"/>
+                            <TextBlock Text= "{Binding TotalEstAmount}" Height="14" FontWeight="Bold" HorizontalAlignment="Left" Margin="328,0,0,3" Name="tb2gCel" VerticalAlignment="Bottom" Width="103" Grid.Row="2" RenderTransformOrigin="0.417,0.5"/>
+
+                            <telerik:RadButton Grid.Row="2" Grid.RowSpan="2" TabIndex="7" Content="Add Travel" Height="23" HorizontalAlignment="Right" Margin="0,14,7,0" Name="btnAddTravel" VerticalAlignment="Top" Width="75" Command="{Binding AddTravelCommand}" Visibility="{Binding IsEvent, Converter={StaticResource InvertBoolToVisConverter}}"/>
+
+                            <TextBlock Text= "Advance Request :" Height="14" FontWeight="Bold" HorizontalAlignment="Left" Margin="9,0,0,0" Name="tb2kggCe" VerticalAlignment="Bottom" Width="124" Grid.Row="5" RenderTransformOrigin="0.417,0.5"/>
+                            <Border  Grid.Row="6" BorderBrush="Black" BorderThickness="0.5" Margin="7,0.5,7,0.2" Background="White"  CornerRadius="0,0,0,0" >
+                                <Grid  Grid.Row="6" Name="grdadvance">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="137*"/>
+                                        <ColumnDefinition Width="140*"/>
+                                        <ColumnDefinition Width="140*"/>
+                                        <ColumnDefinition Width="142*"/>
+                                        <ColumnDefinition Width="136*"/>
+                                        <ColumnDefinition Width="130*"/>
+                                        <ColumnDefinition Width="45*"/>
+                                        <ColumnDefinition Width="55*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock Text= "Amount :" Height="14"  HorizontalAlignment="Left" Margin="10,0,0,30" Name="tbamount" VerticalAlignment="Bottom" Width="56" RenderTransformOrigin="0.417,0.5"/>
+                                    <telerik:RadNumericUpDown  Height="22" Value="{Binding AdvanceAmount,Mode=TwoWay}" Minimum="0"  Margin="10,0,0,7" Name="tbxamount" VerticalAlignment="Bottom" RenderTransformOrigin="0.417,0.5"/>
+
+                                    <TextBlock Text= "Conversion Rate :" Height="14" Grid.Column="1" HorizontalAlignment="Left" Margin="10,-1,0,32" Name="tbCurrConv" VerticalAlignment="Bottom" Width="104" RenderTransformOrigin="0.417,0.5"/>
+                                    <telerik:RadNumericUpDown  Height="22" Grid.Column="1" Value="{Binding ConversionRate,Mode=TwoWay}" Minimum="0" Margin="10,0,0,7" Name="tbxamountrate" VerticalAlignment="Bottom" RenderTransformOrigin="0.417,0.5"/>
+
+                                    <TextBlock Text= "Amount BDT :" Height="14" Grid.Column="2" HorizontalAlignment="Left" Margin="10,-1,0,32" Name="tbCurrAmtBDT" VerticalAlignment="Bottom" Width="104" RenderTransformOrigin="0.417,0.5"/>
+                                    <TextBox  Height="22" Grid.Column="2" Text="{Binding AmountInBDT,Mode=TwoWay}" IsReadOnly="True" Margin="10,0,0,7" Name="tbxAmtBDT" VerticalAlignment="Bottom" RenderTransformOrigin="0.417,0.5"/>
+
+                                    <TextBlock Text= "Currency :" Height="14" Grid.Column="3" HorizontalAlignment="Left" Margin="10,-1,0,32" Name="tbCurr" VerticalAlignment="Bottom" Width="56" RenderTransformOrigin="0.417,0.5"/>
+                                    <telerik:RadComboBox  ItemsSource="{Binding CurrencyItems,Mode=OneWay}" DisplayMemberPath="Name" SelectedItem="{Binding CurrencyItem, Mode=TwoWay}" Height="22" Grid.Column="3" Margin="10,0,0,7" Name="tbxcurr" VerticalAlignment="Bottom" />
+
+                                    <TextBlock Text= "Date Required :" Height="14" Grid.Column="4" HorizontalAlignment="Left" Margin="10,-1,0,32" Name="tbDatreq" VerticalAlignment="Bottom" Width="95" RenderTransformOrigin="0.417,0.5"/>
+                                    <telerik:RadDatePicker SelectedValue="{Binding AdvanceDateRequired, Mode=TwoWay}" Height="22" Grid.Column="4" Margin="10,0,0,7" Name="tbxDatreq" VerticalAlignment="Bottom" RenderTransformOrigin="0.417,0.5" Culture="{Binding CultureWithFormattedPeriod}"/>
+
+                                    <TextBlock Text= "Date Refund :" Height="14" Grid.Column="5" HorizontalAlignment="Left" Margin="10,-1,0,32" Name="tbDatref" VerticalAlignment="Bottom" Width="95" RenderTransformOrigin="0.417,0.5"/>
+                                    <telerik:RadDatePicker SelectedValue="{Binding AdvanceDateRefund, Mode=TwoWay}" Height="22" Grid.Column="5" Margin="10,0,0,7" Name="tbxDatref" VerticalAlignment="Bottom" RenderTransformOrigin="0.417,0.5" Culture="{Binding CultureWithFormattedPeriod}"/>
+
+                                    <TextBlock Text= "Cash:" Height="14" Grid.Column="6" Margin="9,0,0,30" Name="tbCashtref" VerticalAlignment="Bottom" RenderTransformOrigin="0.417,0.5" HorizontalAlignment="Left" Width="35"/>
+                                    <CheckBox IsChecked="{Binding IsAdvanceCash, Mode=TwoWay}" Height="22" Grid.Column="6" Margin="18,0,0,7" Name="cbxCash" VerticalAlignment="Bottom" RenderTransformOrigin="0.417,0.5" HorizontalAlignment="Left" Width="15" />
+
+                                    <TextBlock Text= "Cheque:" Height="14" Grid.Column="7" HorizontalAlignment="Left" Margin="4,0,0,31" Name="tbChetref" VerticalAlignment="Bottom" Width="46" RenderTransformOrigin="0.417,0.5"/>
+                                    <CheckBox IsChecked="{Binding IsAdvanceCredit, Mode=TwoWay}"  Height="22" Grid.Column="7" Margin="18,0,0,7" Name="cbxCredit" VerticalAlignment="Bottom" RenderTransformOrigin="0.382,0.5" HorizontalAlignment="Left" Width="17" />
+                                </Grid>
+                            </Border>
+                            <!--<telerik:RadGridView  telerik:StyleManager.Theme="Office_Black"  
+                                                  AutoGenerateColumns="False" ValidatesOnDataErrors="None" 
+                                                  ItemsSource="{Binding Items, Mode=OneWay}" 
+                                                  Margin="7,7,6,2" Name="rgvInvtTypes" 
+                                                  ShowGroupPanel="False" 
+                                                  Grid.Row="4" CanUserDeleteRows="False" 
+                                                  CanUserInsertRows="False" IsReadOnly="True" 
+                                                  DataLoadMode="Synchronous"
+                                                  IsSynchronizedWithCurrentItem="True" 
+                                                  SelectionMode="Single"
+                                                  SelectedItem="{Binding SelectedItem, Mode=TwoWay}" >
+
+                                <telerik:RadGridView.Columns>
+                                    <telerik:GridViewDataColumn IsReadOnly="True" IsResizable="False" >
+                                        <telerik:GridViewDataColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Button Name="btnadd"
+                                                            Width="20"
+                                                            Height="20"
+                                                            CommandParameter="{Binding}"
+                                                            IsTabStop="False"
+                                                            Visibility="{Binding IsAddVisible}"
+                                                            Content="..."
+                                                            ToolTipService.ToolTip="Click here to add this row...">
+
+                                                    <Button.Command>
+                                                        <Binding Path="DataContext.AddItem" RelativeSource="{RelativeSource AncestorType=UserControl}" />
+                                                    </Button.Command>
+                                                </Button>
+                                            </DataTemplate>
+                                        </telerik:GridViewDataColumn.CellTemplate>
+                                    </telerik:GridViewDataColumn>
+
+                                    <telerik:GridViewDataColumn IsReadOnly="True" IsResizable="False">
+                                        <telerik:GridViewDataColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Button Name="btndelete"
+                                                            Width="20"
+                                                            Height="20"
+                                                            Visibility="{Binding IsDeleteVisible}"
+                                                            CommandParameter="{Binding}"
+                                                            IsTabStop="False"
+                                                            ToolTipService.ToolTip="Click here to remove this row...">
+                                                    <Button.Content>
+                                                        <Image Name="imageTest"
+                                                                   Width="10"
+                                                                   Height="10"
+                                                                   HorizontalAlignment="Left"
+                                                                   VerticalAlignment="Top"
+                                                                   Source="/Ease.PPIC.Modules;component/Assets/Images/delete.PNG"
+                                                                   Stretch="Fill" />
+                                                    </Button.Content>
+                                                    <Button.Command>
+                                                        <Binding Path="DataContext.DeleteItem" RelativeSource="{RelativeSource AncestorType=UserControl}" />
+                                                    </Button.Command>
+                                                </Button>
+                                            </DataTemplate>
+                                        </telerik:GridViewDataColumn.CellTemplate>
+                                    </telerik:GridViewDataColumn>
+                                    <telerik:GridViewDataColumn Header="Amount" TextWrapping="Wrap" IsReadOnly="True" IsResizable="True" Width="160" HeaderTextAlignment="Center" >
+                                        <telerik:GridViewDataColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <telerik:RadNumericUpDown
+                                                    Value="{Binding Amount}" 
+                                                    Margin="0,0,0,0" 
+                                                    Minimum="0"
+                                                    />
+                                            </DataTemplate>
+                                        </telerik:GridViewDataColumn.CellTemplate>
+                                    </telerik:GridViewDataColumn>
+                                   <telerik:GridViewDataColumn Header="Currency" IsReadOnly="True" IsResizable="True" Width="190" HeaderTextAlignment="Center">
+                                        <telerik:GridViewDataColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <telerik:RadComboBox DisplayMemberPath="Name" 
+                                                                     VerticalAlignment="Center" 
+                                                                     HorizontalAlignment="Center" 
+                                                                     ItemsSource="{Binding Path=DataContext.ModeofTravels, 
+                                                                                           RelativeSource={RelativeSource AncestorType=UserControl}, 
+                                                                                           Mode=TwoWay}" 
+                                                                     Margin="0,0,0,0" Name="cboInvtTypes" 
+                                                                     SelectedItem="{Binding ModeOfTravel,Mode=TwoWay}" 
+                                                                     TabIndex="3" 
+                                                                     Width="180" Height="22" />
+                                            </DataTemplate>
+                                        </telerik:GridViewDataColumn.CellTemplate>
+                                    </telerik:GridViewDataColumn>
+
+                                    <telerik:GridViewDataColumn Header="Date of Required" IsReadOnly="True" IsResizable="True" Width="150" HeaderTextAlignment="Center">
+                                        <telerik:GridViewDataColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <telerik:RadDatePicker SelectedValue="{Binding DateFrom, Mode=TwoWay}" 
+                                                                       Margin="0,0,0,0"
+                                                                       Width="140"
+                                                                       VerticalAlignment="Center"
+                                                                       HorizontalAlignment="Center" 
+                                                                       Culture="{Binding Path=DataContext.CultureWithFormattedPeriod, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
+                                            </DataTemplate>
+                                        </telerik:GridViewDataColumn.CellTemplate>
+                                    </telerik:GridViewDataColumn>
+
+                                    <telerik:GridViewDataColumn Header="Date of Refund" IsReadOnly="True" IsResizable="True" Width="150" HeaderTextAlignment="Center">
+                                        <telerik:GridViewDataColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <telerik:RadDatePicker SelectedValue="{Binding DateFrom, Mode=TwoWay}" 
+                                                                       Margin="0,0,0,0"
+                                                                       Width="140"
+                                                                       VerticalAlignment="Center"
+                                                                       HorizontalAlignment="Center" 
+                                                                       Culture="{Binding Path=DataContext.CultureWithFormattedPeriod, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
+                                            </DataTemplate>
+                                        </telerik:GridViewDataColumn.CellTemplate>
+                                    </telerik:GridViewDataColumn>
+
+                                    <telerik:GridViewDataColumn Header="Cash" TextWrapping="Wrap" IsReadOnly="True" IsResizable="True" Width="*" HeaderTextAlignment="Center" >
+                                        <telerik:GridViewDataColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <CheckBox  Margin="0,0,0,0" 
+                                                           VerticalAlignment="Center"
+                                                           HorizontalAlignment="Center"
+                                                          Height="16" 
+                                                           IsChecked="{Binding IsHotelAccomodation,Mode=TwoWay}"/>
+                                            </DataTemplate>
+                                        </telerik:GridViewDataColumn.CellTemplate>
+                                    </telerik:GridViewDataColumn>
+                                    <telerik:GridViewDataColumn Header="Cheque" TextWrapping="Wrap" IsReadOnly="True" IsResizable="True" Width="*" HeaderTextAlignment="Center" >
+                                        <telerik:GridViewDataColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <CheckBox  Margin="0,0,0,0" 
+                                                           VerticalAlignment="Center"
+                                                           HorizontalAlignment="Center"
+                                                           Height="16" 
+                                                           IsChecked="{Binding IsHotelAccomodation,Mode=TwoWay}"/>
+                                            </DataTemplate>
+                                        </telerik:GridViewDataColumn.CellTemplate>
+                                    </telerik:GridViewDataColumn>
+                                </telerik:RadGridView.Columns>
+                                
+                                -->
+                            <!--<telerik:RadGridView.RowDetailsTemplate>
+                                    <DataTemplate>
+                                        <Grid Height="100" Width="Auto"  HorizontalAlignment="Stretch" Background="White">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="1*"/>
+                                                <RowDefinition Height="1*"/>                                               
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="100" />
+                                                <ColumnDefinition Width="600" />
+                                            </Grid.ColumnDefinitions>
+
+
+                                            <TextBlock Grid.Row="0" Grid.Column="0" Height="Auto"  Text="From Location:" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                            <TextBox Grid.Row="0" Grid.Column="1"
+                    	                            Margin="0,0,0,0"
+                    	                            HorizontalAlignment="Left"
+                    	                            VerticalAlignment="Stretch"
+                                                    HorizontalScrollBarVisibility="Disabled"
+                                                                     VerticalScrollBarVisibility="Visible"
+                                                                    TextWrapping="Wrap" AcceptsReturn="True" VerticalContentAlignment="Top"
+                                                         Height="45" Width="580"
+                    	                            Text="{Binding Specification, Mode=TwoWay}"
+                                                                     IsEnabled="True" 
+                    	                            IsReadOnly="False" />
+
+                                            <TextBlock Grid.Row="1" Grid.Column="0" Height="Auto"  HorizontalAlignment="Center" VerticalAlignment="Center" Text="To Location:"/>
+                                            <TextBox Grid.Row="1" 
+                                                     Grid.Column="1"
+                    	                            Margin="0,0,0,0"
+                    	                            HorizontalAlignment="Left"
+                    	                            VerticalAlignment="Stretch"
+                                                    HorizontalScrollBarVisibility="Disabled"
+                                                                     VerticalScrollBarVisibility="Visible"
+                                                                    TextWrapping="Wrap" AcceptsReturn="True" VerticalContentAlignment="Top"
+                                                         Height="45" Width="580"
+                    	                            Text="{Binding Specification, Mode=TwoWay}"
+                                                                     IsEnabled="True" 
+                    	                            IsReadOnly="False" />
+
+                                        </Grid>
+                                    </DataTemplate>
+                                </telerik:RadGridView.RowDetailsTemplate>-->
+                            <!--
+                            </telerik:RadGridView>-->
+
+                            <TextBlock Text= "{Binding EventorTravelDetailsLabel}" Height="14" FontWeight="Bold" HorizontalAlignment="Left" Margin="9,0,0,0" Name="tbkggCe" VerticalAlignment="Bottom" Width="105" Grid.Row="3" RenderTransformOrigin="0.417,0.5"/>
+                            <telerik:RadGridView  telerik:StyleManager.Theme="Office Blue"  
+                                                  AutoGenerateColumns="False" ValidatesOnDataErrors="None" 
+                                                  ItemsSource="{Binding TravelOrEventPlanModelItems, Mode=TwoWay}" 
+                                                  Margin="7,7,6,2" Name="rgvInvtTypes2" 
+                                                  ShowGroupPanel="False" 
+                                                  Grid.Row="4" CanUserDeleteRows="False" 
+                                                  CanUserInsertRows="False" IsReadOnly="True" 
+                                                  DataLoadMode="Synchronous"
+                                                  IsSynchronizedWithCurrentItem="True" 
+                                                  SelectionMode="Single"
+                                                  SelectedItem="{Binding SelectedTravelOrEventPlanModelItem, Mode=TwoWay}" >
+
+                                <telerik:RadGridView.Columns>
+                                    <telerik:GridViewDataColumn IsReadOnly="True" IsResizable="False" IsVisible="{Binding Path=DataContext.IsEvent, RelativeSource={RelativeSource AncestorType=UserControl}}">
+                                        <telerik:GridViewDataColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Button Name="btnadd"
+                                                            Width="20"
+                                                            Height="20"
+                                                            CommandParameter="{Binding}"
+                                                            IsTabStop="False"
+                                                            Visibility="{Binding IsAddVisible}"
+                                                            Content="..."
+                                                            ToolTipService.ToolTip="Click here to add New Event Or Plan...">
+
+                                                    <Button.Command>
+                                                        <Binding Path="DataContext.AddTravelOrEventPlanItem" RelativeSource="{RelativeSource AncestorType=UserControl}" />
+                                                    </Button.Command>
+                                                </Button>
+                                            </DataTemplate>
+                                        </telerik:GridViewDataColumn.CellTemplate>
+                                    </telerik:GridViewDataColumn>
+
+                                    <telerik:GridViewDataColumn IsReadOnly="True" IsResizable="False">
+                                        <telerik:GridViewDataColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Button Name="btndelete"
+                                                            Width="20"
+                                                            Height="20"
+                                                            Visibility="{Binding IsDeleteVisible}"
+                                                            CommandParameter="{Binding}"
+                                                            IsTabStop="False"
+                                                            ToolTipService.ToolTip="Click here to remove this row...">
+                                                    <Button.Content>
+                                                        <Image Name="imageTest"
+                                                                   Width="10"
+                                                                   Height="10"
+                                                                   HorizontalAlignment="Left"
+                                                                   VerticalAlignment="Top"
+                                                                   Source="/Ease.PPIC.Modules;component/Assets/Images/delete.PNG"
+                                                                   Stretch="Fill" />
+                                                    </Button.Content>
+                                                    <Button.Command>
+                                                        <Binding Path="DataContext.DeleteTravelOrEventPlanItem" RelativeSource="{RelativeSource AncestorType=UserControl}" />
+                                                    </Button.Command>
+                                                </Button>
+                                            </DataTemplate>
+                                        </telerik:GridViewDataColumn.CellTemplate>
+                                    </telerik:GridViewDataColumn>
+                                    <telerik:GridViewDataColumn DataMemberBinding="{Binding TravellerName, Mode=TwoWay}" IsReadOnly="True" Header="Traveller Name" Width="130" HeaderTextAlignment="Left" IsVisible="{Binding Path=DataContext.IsEvent, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
+                                    <!--<telerik:GridViewDataColumn Header="Traveller Name" IsReadOnly="True" IsResizable="True" Width="130" HeaderTextAlignment="Center">
+                                        <telerik:GridViewDataColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <telerik:RadDatePicker SelectedValue="{Binding TravellerName, Mode=TwoWay}" 
+                                                                       Margin="0,0,0,0"  VerticalAlignment="Center"
+                                                                       HorizontalAlignment="Center" 
+                                                                       Width="125"
+                                                                       Culture="{Binding Path=DataContext.CultureWithFormattedPeriod, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
+                                            </DataTemplate>
+                                        </telerik:GridViewDataColumn.CellTemplate>
+                                    </telerik:GridViewDataColumn>-->
+
+                                    <telerik:GridViewDataColumn Header="From Date" IsReadOnly="True" IsResizable="True" Width="130" HeaderTextAlignment="Center">
+                                        <telerik:GridViewDataColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <telerik:RadDatePicker SelectedValue="{Binding FromDate, Mode=TwoWay}" 
+                                                                       Margin="0,0,0,0"  VerticalAlignment="Center"
+                                                                       HorizontalAlignment="Center" 
+                                                                       Width="125"
+                                                                       Culture="{Binding Path=DataContext.CultureWithFormattedPeriod, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
+                                            </DataTemplate>
+                                        </telerik:GridViewDataColumn.CellTemplate>
+                                    </telerik:GridViewDataColumn>
+
+                                    <!--<telerik:GridViewDataColumn DataMemberBinding="{Binding FromLocation}" Header="From Location" Width="140" HeaderTextAlignment="Center" TextAlignment="Left"/>-->
+                                    <telerik:GridViewDataColumn Header="From Location" IsReadOnly="True" IsResizable="True" Width="190" HeaderTextAlignment="Center">
+                                        <telerik:GridViewDataColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBox  HorizontalAlignment="Center" 
+                                                          Height="22" Margin="0,0,0,0" 
+                                                          Grid.Row="2" Grid.Column="1" 
+                                                          Name="tt" VerticalAlignment="Center" 
+                                                          Width="175" Text="{Binding FromLocation, Mode=TwoWay}" TabIndex="2" AcceptsReturn="True"/>
+                                            </DataTemplate>
+                                        </telerik:GridViewDataColumn.CellTemplate>
+                                    </telerik:GridViewDataColumn>
+
+                                    <telerik:GridViewDataColumn Header="To Date" IsReadOnly="True" IsResizable="True" Width="130" HeaderTextAlignment="Center">
+                                        <telerik:GridViewDataColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <telerik:RadDatePicker SelectedValue="{Binding ToDate, Mode=TwoWay}" 
+                                                                       Margin="0,0,0,0"
+                                                                       Width="120"
+                                                                       VerticalAlignment="Center"
+                                                                       HorizontalAlignment="Center" 
+                                                                       Culture="{Binding Path=DataContext.CultureWithFormattedPeriod, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
+                                            </DataTemplate>
+                                        </telerik:GridViewDataColumn.CellTemplate>
+                                    </telerik:GridViewDataColumn>
+
+                                    <!--<telerik:GridViewDataColumn DataMemberBinding="{Binding ToLocation}" Header="To Location"   Width="80" HeaderTextAlignment="Center" TextAlignment="Left"/>-->
+
+                                    <telerik:GridViewDataColumn Header="To Location" IsReadOnly="True" IsResizable="True" Width="190" HeaderTextAlignment="Center">
+                                        <telerik:GridViewDataColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBox  HorizontalAlignment="Center" 
+                                                          Height="22" Margin="0,0,0,0"
+                                                          Grid.Row="2" Grid.Column="1" 
+                                                          Name="txtName" VerticalAlignment="Center" 
+                                                          Width="175" Text="{Binding ToLocation, Mode=TwoWay}" TabIndex="2" AcceptsReturn="True" />
+                                            </DataTemplate>
+                                        </telerik:GridViewDataColumn.CellTemplate>
+                                    </telerik:GridViewDataColumn>
+                                    <!--<telerik:GridViewToggleRowDetailsColumn Header="Locations" Width="62" />-->
+                                    <telerik:GridViewDataColumn Header="Mode of Travel" IsReadOnly="True" IsResizable="True" Width="162" HeaderTextAlignment="Center">
+                                        <telerik:GridViewDataColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <telerik:RadComboBox VerticalAlignment="Center" 
+                                                                     HorizontalAlignment="Center" 
+                                                                     ItemsSource="{Binding Path=DataContext.ModeofTravels, 
+                                                                                           RelativeSource={RelativeSource AncestorType=UserControl}, 
+                                                                                           Mode=TwoWay}" 
+                                                                     Margin="0,0,0,0" Name="cboInvtTypes"                                                                      
+                                                                     SelectedValue="{Binding ModeOfTravel, Mode=TwoWay}" 
+                                                                     SelectedValuePath="Key" 
+                                                                     DisplayMemberPath="Value" 
+                                                                     TabIndex="3" 
+                                                                     Width="155" Height="22" />
+                                                <!--<telerik:RadComboBox ItemsSource="{Binding Path=DataContext.ModeofTravels, 
+                                                                                           RelativeSource={RelativeSource AncestorType=UserControl},
+                                                                                           Mode=OneTime, Converter={StaticResource enumConvLoadFrom}}" 
+                                                                                           SelectedItem="{Binding ModeOfTravel, Mode=TwoWay}" 
+                                                                                           IsEnabled="{Binding CanEdit}"
+                                                                                           HorizontalAlignment="Stretch" Margin="0,1,5,0" TabIndex="0" 
+                                                                                           VerticalAlignment="Top" MinWidth="155">
+                                                    <telerik:RadComboBox.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <TextBlock Text="{Binding Mode=OneTime,Converter={StaticResource EnumDescriptionConverter}}" />
+                                                        </DataTemplate>
+                                                    </telerik:RadComboBox.ItemTemplate>
+                                                </telerik:RadComboBox>-->
+                                            </DataTemplate>
+                                        </telerik:GridViewDataColumn.CellTemplate>
+                                    </telerik:GridViewDataColumn>
+
+                                    <telerik:GridViewDataColumn Header="Hotel &#10; Accomodation" TextWrapping="Wrap" IsReadOnly="True" IsResizable="True" Width="100" HeaderTextAlignment="Center" >
+
+                                        <telerik:GridViewDataColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <CheckBox  Margin="0,0,0,0" 
+                                                           VerticalAlignment="Center"
+                                                           HorizontalAlignment="Center"
+                                                           Width="30" Height="16" 
+                                                           IsChecked="{Binding IsHotelAccomodation,Mode=TwoWay}"/>
+                                            </DataTemplate>
+                                        </telerik:GridViewDataColumn.CellTemplate>
+                                    </telerik:GridViewDataColumn>
+                                </telerik:RadGridView.Columns>
+
+                            </telerik:RadGridView>
+
+                        </Grid>
+                        <Grid x:Name="Footer" Grid.Row="4">
+                            <StackPanel FlowDirection="LeftToRight" Margin="0,8,90,0" HorizontalAlignment="Right" Orientation="Horizontal" Height="Auto" Width="Auto">
+                                <telerik:RadButton TabIndex="4" Content="Save" Height="23" Name="btnAdd" VerticalAlignment="Top" Width="75" Command="{Binding SaveCommand}" Visibility="{Binding AllowAdd, Mode=OneTime}"/>
+
+                            </StackPanel>
+
+                            <telerik:RadButton TabIndex="7" Content="Close" Height="23" HorizontalAlignment="Right" Margin="0,8,7,0" Name="btnClose" VerticalAlignment="Top" Width="75" Command="{Binding CloseView}"/>
+
+                        </Grid>
+                    </Grid>
+                </Border>
+            </Grid>
+        </telerik:RadBusyIndicator>
+    </Grid>
+</UserControl>
+
+
